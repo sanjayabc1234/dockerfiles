@@ -18,7 +18,8 @@ RUN apt-get install -y nano
 RUN apt-get install apache2 libapache2-mod-php5 -y
 RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
 
-RUN echo '<IfModule mod_dir.c>\n\t\tDirectoryIndex index.php index.html index.cgi index.pl index.xhtml index.htm\n</IfModule>'
+RUN sed -i "13 i \ \n\t# Added automatically using dockerfile\n\t<Directory /var/www/html>\n\t\tOptions Indexes FollowSymLinks MultiViews\n\t\tAllowOverride All\n\t\tRequire all granted\n\t</Directory>\n" /etc/apache2/sites-available/000-default.conf
+RUN sed -i '30 a \ \n\t# Added automatically using dockerfile\n\t<IfModule mod_dir.c>\n\t\tDirectoryIndex index.php index.pl index.cgi index.html index.xhtml index.htm\t\n\t</IfModule>\n' /etc/apache2/sites-available/000-default.conf
 
 RUN a2enmod rewrite
 RUN service apache2 restart
