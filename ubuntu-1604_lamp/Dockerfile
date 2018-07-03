@@ -72,12 +72,16 @@ VOLUME /var/www/html
 VOLUME /var/log/httpd
 VOLUME /etc/apache2
 
-#RUN groupadd dev
-#RUN useradd -r -u 1000 -g dev dev
-#USER dev
-#ENTRYPOINT ["sleep", "infinity"]
+RUN echo "root:ser_123" | chpasswd
 
-CMD ./usr/sbin/run-lamp.sh
+RUN groupadd dev
+RUN useradd -d /home/dev -u 1000 -g dev dev
+RUN echo 'dev:ser_123' | chpasswd
+RUN usermod -aG sudo dev
+USER dev
+WORKDIR /home/dev
+
+#CMD ./usr/sbin/run-lamp.sh
 
 #docker build . -t ubuntu-php7:16.04
 #RUN chown -R www-data:www-data /var/www/html
