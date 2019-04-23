@@ -34,6 +34,7 @@ RUN echo 'dev:ser_123' | chpasswd
 RUN usermod -aG sudo dev
 
 RUN chown -R "dev:dev" /var/www/
+RUN chown -R "dev:dev" /home/
 
 USER dev
 WORKDIR /var/www/html
